@@ -43,7 +43,6 @@ def horizontal(row):
     board = ""
     for x in range(3): #going horizontal 'x' means each horizontal space
         if x < 2:
-            print(mark(position[row][x]))
             board += mark(position[row][x]) + "|"
         else:
             board += mark(position[row][x])
@@ -127,6 +126,7 @@ def dinamics(playerOne, playerTwo):
     flagtwo = True
     flagthree = True
     while(flag):
+        flagtwo = True
         counter = 1
         print('Round {}!!!'.format(counter))
         makingboard()
@@ -135,12 +135,19 @@ def dinamics(playerOne, playerTwo):
             coordinaterow = int(input('Row number'))
             coordinatecolumn = int(input('Column number'))
             info = validatingcoordinates(coordinaterow, coordinatecolumn, playerOne)
+            print ('here info')
+            print(info)
             if info == 1:
                 flagthree = True
                 flagtwo = False
             elif info == 0:
                 print('Position has been played already choose a different coordinate')
                 flagtwo = True
+            elif info == 9:
+                print('Congratulations Player one has won')
+                flag = False
+                flagtwo = False
+                flagthree = False
             else:
                 print('Choose a coordinate within the board')
                 flagtwo = True
@@ -151,15 +158,20 @@ def dinamics(playerOne, playerTwo):
             coordinatecolumn = int(input('Column number'))
             info = validatingcoordinates(coordinaterow, coordinatecolumn, playerTwo)
             if info == 1:
-                flagtwo = True
                 flagthree = False
             elif info == 0:
                 print('Position has been played already choose a different coordinate')
                 flagtwo = True
+            elif info == 9:
+                print('Congratulations Player two has won')
+                flag = False
+                flagtwo = False
+                flagthree = False
             else:
                 print('Choose a coordinate within the board')
                 flagtwo = True
         makingboard()
+        counter += 1
          
 def validatingcoordinates(row, column, marker):
     """checking coordinate is within game frame."""
@@ -169,11 +181,29 @@ def validatingcoordinates(row, column, marker):
     if row <= 2 and column <= 2:
         if position[row][column] == 0:
             position[row][column] = marker
-            return 1 #succesfull
+            """Checking if player won."""
+            if position[0][0] == marker and position[0][1] == marker and position [0][2] == marker:
+                return 9
+            elif position[1][0] == marker and position[1][1] == marker and position [1][2] == marker:
+                return 9
+            elif position[2][0] == marker and position[2][1] == marker and position [2][2] == marker:
+                return 9
+            elif position[0][0] == marker and position[1][0] == marker and position [2][0] == marker:
+                return 9
+            elif position[0][1] == marker and position[1][1] == marker and position [2][1] == marker:
+                return 9
+            elif position[0][2] == marker and position[1][2] == marker and position [2][2] == marker:
+                return 9
+            elif position[0][0] == marker and position[1][1] == marker and position [2][2] == marker:
+                return 9
+            elif position[2][0] == marker and position[1][1] == marker and position [0][2] == marker:
+                return 9
+            else:
+                return 1 #succesfull
         else:
             return 0 #position has been played
     else:
-        return 2 #out of bundaries
+        return 2 #out of boundaries
     
 main()
     
